@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat mit Jana</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+            font-size: 18px;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            max-height: 300px;
+            border-bottom: 1px solid #ddd;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message.jana {
+            text-align: left;
+            color: #007bff;
+        }
+        .message.reiner {
+            text-align: right;
+            color: #333;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        .chat-input button {
+            padding: 8px 12px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .chat-input button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">Chat mit Jana</div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Nachrichten werden hier angezeigt -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Nachricht schreiben...">
+            <button id="sendButton">Senden</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+
+        function addMessage(sender, text) {
+            const message = document.createElement('div');
+            message.classList.add('message', sender);
+            message.textContent = text;
+            chatMessages.appendChild(message);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function janaResponds() {
+            const responses = [
+                "Hey Reiner! Ich hoffe, dir geht's gut. 🙂", 
+                "Oh Mann, ich bin so viel am Arbeiten, das ist echt stressig... 😅", 
+                "Bald ziehen wir zusammen, dann hab ich endlich mehr Zeit für dich ❤️.", 
+                "Lass uns das bald hinkriegen, ich freu mich so auf unsere Treffen! 😊",
+                "Wie war dein Tag heute?" 
+            ];
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            setTimeout(() => addMessage('jana', randomResponse), Math.random() * 2000 + 1000);
+        }
+
+        sendButton.addEventListener('click', () => {
+            const userText = userInput.value.trim();
+            if (userText !== '') {
+                addMessage('reiner', userText);
+                userInput.value = '';
+                sendButton.disabled = true;
+
+                // Jana antwortet mit Verzögerung
+                janaResponds();
+                setTimeout(() => sendButton.disabled = false, 3000);
+            }
+        });
+
+        userInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
